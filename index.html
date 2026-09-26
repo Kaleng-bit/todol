@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal OS - Your Personal Command Center</title>
+    <meta name="description"
+        content="Open one app. See everything. Manage everything. Personal OS is the ultimate dashboard for your tasks, notes, calendar, and AI assistance.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="blob-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <div class="logo">Personal<span>OS</span></div>
+            <nav>
+                <a href="#features">Features</a>
+                <a href="#workflow">Workflow</a>
+                <a href="#ai">AI Assistant</a>
+            </nav>
+            <button class="btn-primary" id="login-btn">Continue with Google</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="badge">Version 1.0 is here</div>
+                    <h1 class="animate-up">Your Personal<br><span class="text-gradient">Command Center</span></h1>
+                    <p class="subtitle animate-up delay-1">Open one app. See everything. Manage everything.</p>
+                    <p class="description animate-up delay-2">Stop switching between to-do lists, calendars, and notes.
+                        Personal OS brings your tasks, audio transcripts, and AI assistant into one beautifully
+                        integrated dashboard.</p>
+                    <div class="cta-group animate-up delay-3">
+                        <button class="btn-primary large">Get Started for Free</button>
+                        <button class="btn-secondary large">See how it works</button>
+                    </div>
+                </div>
+
+                <div class="hero-mockup animate-up delay-4">
+                    <div class="glass-panel mockup-window">
+                        <div class="mockup-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="sidebar">
+                                <div class="nav-item active">Dashboard</div>
+                                <div class="nav-item">Tasks</div>
+                                <div class="nav-item">Calendar</div>
+                                <div class="nav-item">Notes & Audio</div>
+                            </div>
+                            <div class="main-content">
+                                <h2>Good morning, User 👋</h2>
+                                <div class="ai-brief">
+                                    <span class="sparkle">✨</span>
+                                    <p>Today you have 3 meetings, 4 important tasks, and 2 upcoming deadlines.</p>
+                                </div>
+                                <div class="widgets">
+                                    <div class="widget task-widget">
+                                        <h3>Today's Tasks</h3>
+                                        <ul>
+                                            <li><span class="checkbox"></span> Review annual report</li>
+                                            <li><span class="checkbox"></span> Client follow-up</li>
+                                        </ul>
+                                    </div>
+                                    <div class="widget upcoming-widget">
+                                        <h3>Upcoming</h3>
+                                        <div class="event">10:00 AM - Design Sync</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Everything connected.</h2>
+                    <p>Unlike fragmented apps, Personal OS understands context. Your audio becomes text, text becomes
+                        tasks, and tasks move to your calendar.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card glass-panel reveal">
+                        <div class="feature-icon">🎙️</div>
+                        <h3>Audio to Action</h3>
+                        <p>Record your meetings directly. Our AI instantly transcribes the audio, generates summaries,
+                            and extracts action items into your task list.</p>
+                    </div>
+                    <div class="feature-card glass-panel reveal delay-1">
+                        <div class="feature-icon">🧠</div>
+                        <h3>AI Personal Assistant</h3>
+                        <p>Ask "What should I follow up on today?" and your AI will check your notes, transcripts, and
+                            calendar to give you the exact answer.</p>
+                    </div>
+                    <div class="feature-card glass-panel reveal delay-2">
+                        <div class="feature-icon">📊</div>
+                        <h3>Automated Resumes</h3>
+                        <p>End your day or week with an AI-generated summary of what you accomplished, what's pending,
+                            and what needs attention next.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow" class="workflow">
+            <div class="container">
+                <div class="workflow-content reveal">
+                    <h2>The Ultimate Workflow</h2>
+                    <p>Watch how a single meeting seamlessly flows through your entire Personal OS without you lifting a
+                        finger.</p>
+
+                    <div class="workflow-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-text">
+                                <h4>Record Audio</h4>
+                                <p>Tap record during your meeting.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-text">
+                                <h4>AI Transcription & Summary</h4>
+                                <p>Instantly get the text and key decisions.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-text">
+                                <h4>Action Items to Tasks</h4>
+                                <p>Extracted action items become pending tasks.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-text">
+                                <h4>Calendar & Reminders</h4>
+                                <p>Deadlines are mapped to your timeline automatically.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-box glass-panel reveal">
+                    <h2>Ready to regain control?</h2>
+                    <p>Join the future of personal productivity. Simple, fast, and powerfully connected.</p>
+                    <button class="btn-primary large">Continue with Google</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-container">
+            <div class="logo">Personal<span>OS</span></div>
+            <p>© 2026 Personal OS. Built with precision.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
