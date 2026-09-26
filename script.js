@@ -74,6 +74,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- GOOGLE LOGIN LOGIC ---
     const loginBtns = [document.getElementById('login-btn'), document.getElementById('login-btn-bottom')];
+    const getStartedBtn = document.getElementById('get-started-btn');
+    
+    // Wire up "Get Started" to trigger login
+    if (getStartedBtn && loginBtns[0]) {
+        getStartedBtn.addEventListener('click', () => {
+            loginBtns[0].click();
+        });
+    }
+
+    const howItWorksBtn = document.getElementById('how-it-works-btn');
+    if (howItWorksBtn) {
+        howItWorksBtn.addEventListener('click', () => {
+            const workflowSection = document.getElementById('workflow');
+            if (workflowSection) {
+                window.scrollTo({
+                    top: workflowSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
     
     loginBtns.forEach(btn => {
         if (!btn) return;
