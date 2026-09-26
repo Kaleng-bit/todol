@@ -21,24 +21,24 @@
         <aside class="sidebar glass-panel">
             <div class="logo">Personal<span>OS</span></div>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active">
+                <a href="#" class="nav-item active" data-page="dashboard">
                     <span class="icon">📊</span> Dashboard
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-page="tasks">
                     <span class="icon">✅</span> Tasks
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-page="calendar">
                     <span class="icon">📅</span> Calendar
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-page="notes">
                     <span class="icon">📝</span> Notes & Audio
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-page="settings">
                     <span class="icon">⚙️</span> Settings
                 </a>
             </nav>
             <div class="user-profile">
-                <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Profile" id="user-avatar">
+                <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User Profile" id="user-avatar">
                 <div class="user-info">
                     <div class="user-name" id="user-name">User</div>
                     <div class="logout-btn" id="logout-btn">Logout</div>
@@ -48,120 +48,248 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <header class="top-bar">
-                <div class="date-display" id="current-date">Loading date...</div>
-                <div class="quick-actions">
-                    <button class="btn-primary small" id="record-btn">🎙️ Record Audio</button>
-                    <button class="btn-secondary small" id="new-task-btn">➕ New Task</button>
-                </div>
-            </header>
 
-            <div class="dashboard-grid">
-                <!-- AI Briefing -->
-                <div class="widget ai-brief glass-panel span-full">
-                    <div class="widget-header">
-                        <span class="sparkle">✨</span>
-                        <h3>AI Daily Brief</h3>
+            <!-- ====================== PAGE: DASHBOARD ====================== -->
+            <div id="page-dashboard" class="page active">
+                <header class="top-bar">
+                    <div>
+                        <h2 class="page-title">Dashboard</h2>
+                        <div class="date-display" id="current-date">Loading...</div>
                     </div>
-                    <div class="ai-content">
-                        <p id="ai-greeting">Good morning! Here is your daily summary based on your workflow.</p>
-                        <ul class="brief-list">
-                            <li>You have <strong>3 meetings</strong> scheduled for today. The first one is at 10:00 AM.</li>
-                            <li>There are <strong>4 important tasks</strong> pending. Specifically, "Review annual report".</li>
-                            <li>From your audio note yesterday, I added 1 new task: "Client follow-up".</li>
-                        </ul>
+                    <div class="quick-actions">
+                        <button class="btn-secondary small" id="dash-record-btn">🎙️ Record Audio</button>
+                        <button class="btn-primary small" id="dash-new-task-btn">➕ New Task</button>
                     </div>
-                </div>
-
-                <!-- Tasks Widget -->
-                <div class="widget tasks-widget glass-panel">
-                    <div class="widget-header">
-                        <h3>Today's Tasks</h3>
-                        <span class="badge">4</span>
-                    </div>
-                    <div class="task-list">
-                        <label class="task-item">
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                            <span class="task-text">Review annual report</span>
-                            <span class="task-tag urgent">Urgent</span>
-                        </label>
-                        <label class="task-item">
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                            <span class="task-text">Client follow-up email</span>
-                        </label>
-                        <label class="task-item">
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                            <span class="task-text">Design Sync preparation</span>
-                            <span class="task-tag">Work</span>
-                        </label>
-                        <label class="task-item">
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                            <span class="task-text">Buy groceries</span>
-                            <span class="task-tag personal">Personal</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Calendar Widget -->
-                <div class="widget calendar-widget glass-panel">
-                    <div class="widget-header">
-                        <h3>Upcoming Events</h3>
-                    </div>
-                    <div class="event-list">
-                        <div class="event-item">
-                            <div class="event-time">10:00 AM</div>
-                            <div class="event-details">
-                                <div class="event-title">Design Sync</div>
-                                <div class="event-duration">1h • Google Meet</div>
-                            </div>
+                </header>
+                <div class="dashboard-grid">
+                    <!-- AI Briefing -->
+                    <div class="widget ai-brief glass-panel span-full">
+                        <div class="widget-header">
+                            <div style="display:flex;align-items:center;gap:10px"><span class="sparkle">✨</span><h3>AI Daily Brief</h3></div>
                         </div>
-                        <div class="event-item">
-                            <div class="event-time">01:00 PM</div>
-                            <div class="event-details">
-                                <div class="event-title">Lunch with Client</div>
-                                <div class="event-duration">1.5h • Central Cafe</div>
-                            </div>
+                        <div class="ai-content">
+                            <p id="ai-greeting">Good day! Here is your daily overview.</p>
+                            <ul class="brief-list" id="brief-list">
+                                <li>You have <strong>3 meetings</strong> scheduled today. First one at 10:00 AM.</li>
+                                <li>There are <strong>4 pending tasks</strong>. "Review annual report" is urgent.</li>
+                                <li>From your audio note yesterday, 1 action item was added: <strong>"Client follow-up"</strong>.</li>
+                            </ul>
                         </div>
-                        <div class="event-item">
-                            <div class="event-time">03:30 PM</div>
-                            <div class="event-details">
-                                <div class="event-title">Weekly Review</div>
-                                <div class="event-duration">30m • Zoom</div>
-                            </div>
+                    </div>
+                    <!-- Tasks Summary -->
+                    <div class="widget tasks-widget glass-panel">
+                        <div class="widget-header">
+                            <h3>Today's Tasks</h3>
+                            <span class="badge" id="dash-task-badge">4</span>
+                        </div>
+                        <div class="task-list" id="dash-task-list">
+                            <!-- populated by JS -->
+                        </div>
+                        <button class="btn-link" id="dash-view-all-tasks">View all tasks →</button>
+                    </div>
+                    <!-- Upcoming Events -->
+                    <div class="widget calendar-widget glass-panel">
+                        <div class="widget-header">
+                            <h3>Upcoming Events</h3>
+                        </div>
+                        <div class="event-list" id="dash-event-list">
+                            <!-- populated by JS -->
+                        </div>
+                        <button class="btn-link" id="dash-view-calendar">View calendar →</button>
+                    </div>
+                    <!-- Recent Notes -->
+                    <div class="widget notes-widget glass-panel span-full">
+                        <div class="widget-header">
+                            <h3>Recent Transcripts & Notes</h3>
+                            <button class="btn-link" id="dash-view-notes">View all →</button>
+                        </div>
+                        <div class="notes-grid" id="dash-notes-list">
+                            <!-- populated by JS -->
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Recent Notes Widget -->
-                <div class="widget notes-widget glass-panel span-full">
-                    <div class="widget-header">
-                        <h3>Recent Transcripts & Notes</h3>
-                        <a href="#" class="view-all">View All</a>
+            <!-- ====================== PAGE: TASKS ====================== -->
+            <div id="page-tasks" class="page">
+                <header class="top-bar">
+                    <div>
+                        <h2 class="page-title">Tasks</h2>
+                        <p class="page-subtitle">Manage your to-do list</p>
                     </div>
-                    <div class="notes-grid">
-                        <div class="note-card">
-                            <div class="note-icon">🎙️</div>
-                            <div class="note-content">
-                                <h4>Marketing Strategy Sync</h4>
-                                <p class="note-preview">"We need to focus on the Q3 deliverables by next week..."</p>
-                                <span class="note-date">Yesterday, 4:00 PM</span>
+                    <div class="quick-actions">
+                        <select class="filter-select" id="task-filter">
+                            <option value="all">All Tasks</option>
+                            <option value="pending">Pending</option>
+                            <option value="done">Completed</option>
+                        </select>
+                        <button class="btn-primary small" id="add-task-btn">➕ New Task</button>
+                    </div>
+                </header>
+                <!-- Add Task Form -->
+                <div id="add-task-form" class="glass-panel add-form" style="display:none;">
+                    <h4>Add New Task</h4>
+                    <div class="form-row">
+                        <input type="text" id="task-input" class="form-input" placeholder="Task description...">
+                        <select id="task-category" class="form-input small-select">
+                            <option value="Work">Work</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                        <button class="btn-primary small" id="save-task-btn">Save</button>
+                        <button class="btn-secondary small" id="cancel-task-btn">Cancel</button>
+                    </div>
+                </div>
+                <div class="full-task-list glass-panel" id="full-task-list">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+
+            <!-- ====================== PAGE: CALENDAR ====================== -->
+            <div id="page-calendar" class="page">
+                <header class="top-bar">
+                    <div>
+                        <h2 class="page-title">Calendar</h2>
+                        <p class="page-subtitle" id="cal-month-label">Loading...</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="btn-secondary small" id="cal-prev">← Prev</button>
+                        <button class="btn-secondary small" id="cal-next">Next →</button>
+                        <button class="btn-primary small" id="add-event-btn">➕ New Event</button>
+                    </div>
+                </header>
+                <!-- Add Event Form -->
+                <div id="add-event-form" class="glass-panel add-form" style="display:none;">
+                    <h4>Add New Event</h4>
+                    <div class="form-row">
+                        <input type="text" id="event-title-input" class="form-input" placeholder="Event title...">
+                        <input type="date" id="event-date-input" class="form-input">
+                        <input type="time" id="event-time-input" class="form-input">
+                        <button class="btn-primary small" id="save-event-btn">Save</button>
+                        <button class="btn-secondary small" id="cancel-event-btn">Cancel</button>
+                    </div>
+                </div>
+                <div class="calendar-container glass-panel">
+                    <div class="cal-grid-header">
+                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                    </div>
+                    <div class="cal-grid" id="cal-grid"></div>
+                </div>
+                <div class="event-list-full glass-panel" id="event-list-full">
+                    <h3 style="margin-bottom:16px">All Scheduled Events</h3>
+                    <div id="event-items-container"></div>
+                </div>
+            </div>
+
+            <!-- ====================== PAGE: NOTES & AUDIO ====================== -->
+            <div id="page-notes" class="page">
+                <header class="top-bar">
+                    <div>
+                        <h2 class="page-title">Notes & Audio</h2>
+                        <p class="page-subtitle">Your transcripts and written notes</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="btn-secondary small" id="record-btn">🎙️ Record Audio</button>
+                        <button class="btn-primary small" id="add-note-btn">➕ New Note</button>
+                    </div>
+                </header>
+                <!-- Add Note Form -->
+                <div id="add-note-form" class="glass-panel add-form" style="display:none;">
+                    <h4>Write a New Note</h4>
+                    <div class="form-col">
+                        <input type="text" id="note-title-input" class="form-input" placeholder="Note title...">
+                        <textarea id="note-body-input" class="form-input" rows="4" placeholder="Write your note here..."></textarea>
+                        <div class="form-row">
+                            <button class="btn-primary small" id="save-note-btn">Save Note</button>
+                            <button class="btn-secondary small" id="cancel-note-btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="notes-full-grid" id="notes-full-grid">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+
+            <!-- ====================== PAGE: SETTINGS ====================== -->
+            <div id="page-settings" class="page">
+                <header class="top-bar">
+                    <div>
+                        <h2 class="page-title">Settings</h2>
+                        <p class="page-subtitle">Manage your Personal OS preferences</p>
+                    </div>
+                </header>
+                <div class="settings-container">
+                    <div class="settings-section glass-panel">
+                        <h3>👤 Profile</h3>
+                        <div class="settings-row">
+                            <div class="settings-label">Display Name</div>
+                            <div class="settings-control">
+                                <input type="text" id="settings-name" class="form-input" value="Demo User">
+                                <button class="btn-primary small" id="save-name-btn">Save</button>
                             </div>
                         </div>
-                        <div class="note-card">
-                            <div class="note-icon">📝</div>
-                            <div class="note-content">
-                                <h4>Idea: Habit Tracker</h4>
-                                <p class="note-preview">Add a habit tracking module into the Personal OS dashboard.</p>
-                                <span class="note-date">Oct 24, 9:15 AM</span>
+                        <div class="settings-row">
+                            <div class="settings-label">Email</div>
+                            <div class="settings-control">
+                                <input type="email" id="settings-email" class="form-input" value="user@gmail.com" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section glass-panel">
+                        <h3>🎨 Appearance</h3>
+                        <div class="settings-row">
+                            <div class="settings-label">Theme</div>
+                            <div class="settings-control">
+                                <select class="form-input small-select" id="theme-select">
+                                    <option value="dark">Dark (Default)</option>
+                                    <option value="purple">Purple</option>
+                                    <option value="green">Green</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section glass-panel">
+                        <h3>🔔 Notifications</h3>
+                        <div class="settings-row">
+                            <div class="settings-label">Task reminders</div>
+                            <div class="settings-control">
+                                <label class="toggle">
+                                    <input type="checkbox" id="notif-tasks" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-label">Calendar events</div>
+                            <div class="settings-control">
+                                <label class="toggle">
+                                    <input type="checkbox" id="notif-calendar" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-label">AI Daily Brief</div>
+                            <div class="settings-control">
+                                <label class="toggle">
+                                    <input type="checkbox" id="notif-ai">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section glass-panel">
+                        <h3>🔑 Account</h3>
+                        <div class="settings-row">
+                            <div class="settings-label">Sign out from all devices</div>
+                            <div class="settings-control">
+                                <button class="btn-danger small" id="settings-logout-btn">Logout</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
 
