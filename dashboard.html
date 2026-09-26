@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Personal OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="blob-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="logo">Personal<span>OS</span></div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">✅</span> Tasks
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">📅</span> Calendar
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">📝</span> Notes & Audio
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+            <div class="user-profile">
+                <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Profile" id="user-avatar">
+                <div class="user-info">
+                    <div class="user-name" id="user-name">User</div>
+                    <div class="logout-btn" id="logout-btn">Logout</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="date-display" id="current-date">Loading date...</div>
+                <div class="quick-actions">
+                    <button class="btn-primary small" id="record-btn">🎙️ Record Audio</button>
+                    <button class="btn-secondary small">➕ New Task</button>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- AI Briefing -->
+                <div class="widget ai-brief glass-panel span-full">
+                    <div class="widget-header">
+                        <span class="sparkle">✨</span>
+                        <h3>AI Daily Brief</h3>
+                    </div>
+                    <div class="ai-content">
+                        <p id="ai-greeting">Good morning! Here is your daily summary based on your workflow.</p>
+                        <ul class="brief-list">
+                            <li>You have <strong>3 meetings</strong> scheduled for today. The first one is at 10:00 AM.</li>
+                            <li>There are <strong>4 important tasks</strong> pending. Specifically, "Review annual report".</li>
+                            <li>From your audio note yesterday, I added 1 new task: "Client follow-up".</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tasks Widget -->
+                <div class="widget tasks-widget glass-panel">
+                    <div class="widget-header">
+                        <h3>Today's Tasks</h3>
+                        <span class="badge">4</span>
+                    </div>
+                    <div class="task-list">
+                        <label class="task-item">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            <span class="task-text">Review annual report</span>
+                            <span class="task-tag urgent">Urgent</span>
+                        </label>
+                        <label class="task-item">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            <span class="task-text">Client follow-up email</span>
+                        </label>
+                        <label class="task-item">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            <span class="task-text">Design Sync preparation</span>
+                            <span class="task-tag">Work</span>
+                        </label>
+                        <label class="task-item">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            <span class="task-text">Buy groceries</span>
+                            <span class="task-tag personal">Personal</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Calendar Widget -->
+                <div class="widget calendar-widget glass-panel">
+                    <div class="widget-header">
+                        <h3>Upcoming Events</h3>
+                    </div>
+                    <div class="event-list">
+                        <div class="event-item">
+                            <div class="event-time">10:00 AM</div>
+                            <div class="event-details">
+                                <div class="event-title">Design Sync</div>
+                                <div class="event-duration">1h • Google Meet</div>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-time">01:00 PM</div>
+                            <div class="event-details">
+                                <div class="event-title">Lunch with Client</div>
+                                <div class="event-duration">1.5h • Central Cafe</div>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-time">03:30 PM</div>
+                            <div class="event-details">
+                                <div class="event-title">Weekly Review</div>
+                                <div class="event-duration">30m • Zoom</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Notes Widget -->
+                <div class="widget notes-widget glass-panel span-full">
+                    <div class="widget-header">
+                        <h3>Recent Transcripts & Notes</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="notes-grid">
+                        <div class="note-card">
+                            <div class="note-icon">🎙️</div>
+                            <div class="note-content">
+                                <h4>Marketing Strategy Sync</h4>
+                                <p class="note-preview">"We need to focus on the Q3 deliverables by next week..."</p>
+                                <span class="note-date">Yesterday, 4:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="note-card">
+                            <div class="note-icon">📝</div>
+                            <div class="note-content">
+                                <h4>Idea: Habit Tracker</h4>
+                                <p class="note-preview">Add a habit tracking module into the Personal OS dashboard.</p>
+                                <span class="note-date">Oct 24, 9:15 AM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
