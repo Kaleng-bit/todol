@@ -31,13 +31,13 @@ module.exports = async (req, res) => {
             return res.status(400).json({ error: 'Field "prompt" is required' });
         }
 
-        // Priority: Vercel environment variable GEMINI_API_KEY, fallback to client header x-gemini-key
-        const apiKey = process.env.GEMINI_API_KEY || req.headers['x-gemini-key'];
+        // Priority: Vercel environment variable GEMINI_API_KEY or NEXT_PUBLIC_GEMINI_API_KEY, fallback to client header x-gemini-key
+        const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || req.headers['x-gemini-key'];
 
         if (!apiKey) {
             return res.status(503).json({
                 error: 'NO_API_KEY',
-                message: 'Gemini API key is not configured in Vercel environment variables (GEMINI_API_KEY) and no custom key was provided.'
+                message: 'Gemini API key is not configured in Vercel environment variables (NEXT_PUBLIC_GEMINI_API_KEY / GEMINI_API_KEY) and no custom key was provided.'
             });
         }
 

@@ -68,17 +68,42 @@
 
     /**
      * Load configuration in priority order:
-     * 1. Window override: window.__FIREBASE_CONFIG__
-     * 2. LocalStorage override: 'personal_os_firebase_config'
-     * 3. Vercel serverless: /api/config
+     * 0. process.env (Next.js / Bundlers)
+     * 1. Window object (populated by /api/config?format=js or pre-injected)
+     * 2. Vercel serverless endpoint (/api/config)
+     * 3. LocalStorage override
      */
     async function resolveConfig() {
+        // 0. Check process.env if available in client/bundler environment
+        if (typeof process !== 'undefined' && process.env) {
+            const envConfig = {
+                apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || process.env.FIREBASE_API_KEY,
+                authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || process.env.FIREBASE_AUTH_DOMAIN,
+                projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID,
+                storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || process.env.FIREBASE_STORAGE_BUCKET,
+                messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || process.env.FIREBASE_MESSAGING_SENDER_ID,
+                appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || process.env.FIREBASE_APP_ID
+            };
+            if (isValidConfig(envConfig)) {
+                return envConfig;
+            }
+        }
+
         // 1. Check window object
         if (window.__FIREBASE_CONFIG__ && isValidConfig(window.__FIREBASE_CONFIG__)) {
             return window.__FIREBASE_CONFIG__;
         }
+        if (window.ENV_FIREBASE_CONFIG && isValidConfig(window.ENV_FIREBASE_CONFIG)) {
+            return window.ENV_FIREBASE_CONFIG;
+        }
 
-        // 2. Check LocalStorage
+        // 2. Check Vercel serverless API (/api/config)
+        const serverConfig = await fetchServerConfig();
+        if (serverConfig) {
+            return serverConfig;
+        }
+
+        // 3. Check LocalStorage fallback
         try {
             const savedLocal = localStorage.getItem('personal_os_firebase_config');
             if (savedLocal) {
@@ -89,12 +114,6 @@
             }
         } catch (e) {
             console.warn('[Personal OS] Failed to read local config:', e);
-        }
-
-        // 3. Check Vercel serverless API
-        const serverConfig = await fetchServerConfig();
-        if (serverConfig) {
-            return serverConfig;
         }
 
         return DEFAULT_CONFIG;
