@@ -3,50 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Personal OS</title>
+    <title>Personal OS — macOS Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Mermaid.js for Eraser AI Live Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <link rel="stylesheet" href="dashboard.css">
 </head>
-<body>
-    <div class="blob-bg">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
+<body class="theme-mac-light">
+    <!-- Ambient Backdrop -->
+    <div class="mac-ambient-bg"></div>
 
-    <div class="app-layout">
+    <!-- Main macOS Window Container -->
+    <div class="mac-window">
         <!-- Sidebar -->
-        <aside class="sidebar glass-panel">
-            <div class="logo">Personal<span>OS</span></div>
+        <aside class="sidebar">
+            <!-- macOS Window Controls (Traffic Lights) -->
+            <div class="macos-traffic-lights">
+                <span class="tl-dot tl-red" title="Close"></span>
+                <span class="tl-dot tl-yellow" title="Minimize"></span>
+                <span class="tl-dot tl-green" title="Zoom"></span>
+            </div>
+
+            <div class="logo">
+                <span class="logo-mark"></span> Personal<span class="logo-accent">OS</span>
+            </div>
+
+            <div class="sidebar-section-label">Favorites</div>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" data-page="dashboard">
-                    <span class="icon">📊</span> Dashboard
+                    <span class="icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
                 </a>
                 <a href="#" class="nav-item" data-page="tasks">
-                    <span class="icon">✅</span> Tasks
+                    <span class="icon">☑️</span>
+                    <span class="nav-text">Tasks</span>
+                    <span class="sidebar-badge" id="sidebar-task-count">0</span>
                 </a>
                 <a href="#" class="nav-item" data-page="calendar">
-                    <span class="icon">📅</span> Calendar
+                    <span class="icon">📅</span>
+                    <span class="nav-text">Calendar & Agenda</span>
                 </a>
                 <a href="#" class="nav-item" data-page="notes">
-                    <span class="icon">📝</span> Notes & Audio
+                    <span class="icon">📝</span>
+                    <span class="nav-text">Notes & Audio</span>
+                </a>
+                <a href="#" class="nav-item" data-page="eraser">
+                    <span class="icon">✏️</span>
+                    <span class="nav-text">Eraser AI</span>
+                    <span class="sidebar-badge ai-badge">Studio</span>
                 </a>
                 <a href="#" class="nav-item" data-page="settings">
-                    <span class="icon">⚙️</span> Settings
+                    <span class="icon">⚙️</span>
+                    <span class="nav-text">Settings</span>
                 </a>
             </nav>
+
+            <!-- Quick Theme Switcher Pill in Sidebar -->
+            <div class="sidebar-theme-toggle">
+                <button class="theme-pill-btn active" id="btn-theme-light" title="macOS Light">☀️ Light</button>
+                <button class="theme-pill-btn" id="btn-theme-dark" title="macOS Dark">🌙 Dark</button>
+            </div>
+
             <div class="user-profile">
-                <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User Profile" id="user-avatar">
+                <img src="https://ui-avatars.com/api/?name=User&background=0071e3&color=fff" alt="User Profile" id="user-avatar">
                 <div class="user-info">
                     <div class="user-name" id="user-name">User</div>
-                    <div class="logout-btn" id="logout-btn">Logout</div>
+                    <div class="logout-btn" id="logout-btn">Log out…</div>
                 </div>
             </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Main Content Area -->
         <main class="main-content">
 
             <!-- ====================== PAGE: DASHBOARD ====================== -->
@@ -54,54 +83,105 @@
                 <header class="top-bar">
                     <div>
                         <h2 class="page-title">Dashboard</h2>
-                        <div class="date-display" id="current-date">Loading...</div>
+                        <div class="date-display" id="current-date">Loading date…</div>
                     </div>
                     <div class="quick-actions">
                         <button class="btn-secondary small" id="dash-record-btn">🎙️ Record Audio</button>
-                        <button class="btn-primary small" id="dash-new-task-btn">➕ New Task</button>
+                        <button class="btn-primary small" id="dash-new-task-btn">+ New Task</button>
                     </div>
                 </header>
+
                 <div class="dashboard-grid">
-                    <!-- AI Briefing -->
-                    <div class="widget ai-brief glass-panel span-full">
+                    <!-- AI Briefing Widget -->
+                    <div class="widget ai-brief span-full">
                         <div class="widget-header">
-                            <div style="display:flex;align-items:center;gap:10px"><span class="sparkle">✨</span><h3>AI Daily Brief</h3></div>
+                            <div class="ai-header-left">
+                                <span class="sparkle">✨</span>
+                                <div>
+                                    <h3 style="margin:0;font-size:1.05rem;">AI Daily Brief</h3>
+                                    <div style="font-size:0.75rem;color:var(--muted)" id="ai-model-label">Gemini 3.8 Flash Assistant</div>
+                                </div>
+                                <span id="ai-status-badge" class="ai-status-idle">Checking API Key…</span>
+                            </div>
+                            <button class="btn-secondary small" id="refresh-brief-btn">🔄 Refresh Brief</button>
                         </div>
-                        <div class="ai-content">
-                            <p id="ai-greeting">Good day! Here is your daily overview.</p>
-                            <ul class="brief-list" id="brief-list">
-                                <li>You have <strong>3 meetings</strong> scheduled today. First one at 10:00 AM.</li>
-                                <li>There are <strong>4 pending tasks</strong>. "Review annual report" is urgent.</li>
-                                <li>From your audio note yesterday, 1 action item was added: <strong>"Client follow-up"</strong>.</li>
-                            </ul>
+
+                        <div class="ai-content" id="ai-brief-content">
+                            <div class="ai-loading" id="ai-loading" style="display:none">
+                                <div class="mac-spinner"></div>
+                                <span>Gemini 3.8 Flash is generating your daily briefing…</span>
+                            </div>
+                            <div id="ai-brief-text">
+                                <p id="ai-greeting" style="margin-bottom:12px">Loading smart briefing…</p>
+                            </div>
+                        </div>
+
+                        <!-- AI Chat / Ask AI Section -->
+                        <div class="ai-chat-section">
+                            <div class="ai-chat-header">
+                                <span>💬 Ask AI Assistant (Gemini 3.8 Flash)</span>
+                                <span style="font-size:0.75rem;color:var(--muted)">Context-aware productivity helper</span>
+                            </div>
+                            <div id="ai-chat-log">
+                                <div class="chat-bubble ai">
+                                    Halo! Saya asisten AI Personal OS Anda (didukung Gemini 3.8 Flash). Tanyakan apa saja tentang tugas aktif, jadwal, atau mintalah saran produktivitas hari ini.
+                                </div>
+                            </div>
+                            
+                            <!-- Prompt suggestions -->
+                            <div class="ai-quick-prompts">
+                                <button class="prompt-chip" data-prompt="Apa tugas paling penting yang harus saya selesaikan hari ini?">🎯 Prioritas hari ini</button>
+                                <button class="prompt-chip" data-prompt="Buat ringkasan jadwal dan meeting saya hari ini.">📅 Ringkas jadwal</button>
+                                <button class="prompt-chip" data-prompt="Beri saya 3 saran produktivitas untuk fokus kerja hari ini.">💡 Tips fokus</button>
+                            </div>
+
+                            <div class="ai-input-row">
+                                <input type="text" id="ai-question-input" class="form-input" placeholder="Ask AI anything… (e.g. 'Apa task berikutnya?')">
+                                <button class="btn-primary small" id="ask-ai-btn">Send ↵</button>
+                            </div>
                         </div>
                     </div>
-                    <!-- Tasks Summary -->
-                    <div class="widget tasks-widget glass-panel">
+
+                    <!-- Tasks Summary Widget (Active Tasks Only - No Spam) -->
+                    <div class="widget tasks-widget">
                         <div class="widget-header">
-                            <h3>Today's Tasks</h3>
-                            <span class="badge" id="dash-task-badge">4</span>
+                            <div>
+                                <h3>Today's Active Tasks</h3>
+                                <div id="dash-task-status-counters" style="font-size:0.75rem;color:var(--muted);margin-top:2px;">
+                                    Loading status…
+                                </div>
+                            </div>
+                            <span class="badge" id="dash-task-badge">0</span>
                         </div>
                         <div class="task-list" id="dash-task-list">
                             <!-- populated by JS -->
                         </div>
-                        <button class="btn-link" id="dash-view-all-tasks">View all tasks →</button>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+                            <button class="btn-link" id="dash-view-all-tasks">Buka Task Board →</button>
+                            <button class="btn-link" id="dash-open-bank-data" style="color:var(--text-secondary)">📦 Bank Data Selesai (<span id="dash-bank-count">0</span>) →</button>
+                        </div>
                     </div>
-                    <!-- Upcoming Events -->
-                    <div class="widget calendar-widget glass-panel">
+
+                    <!-- Upcoming Events Widget (With Checkboxes) -->
+                    <div class="widget calendar-widget">
                         <div class="widget-header">
-                            <h3>Upcoming Events</h3>
+                            <div>
+                                <h3>Upcoming Events & Agenda</h3>
+                                <div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Klik centang jika agenda selesai</div>
+                            </div>
+                            <span class="badge" id="dash-event-badge">0</span>
                         </div>
                         <div class="event-list" id="dash-event-list">
                             <!-- populated by JS -->
                         </div>
-                        <button class="btn-link" id="dash-view-calendar">View calendar →</button>
+                        <button class="btn-link" id="dash-view-calendar">Open calendar agenda →</button>
                     </div>
-                    <!-- Recent Notes -->
-                    <div class="widget notes-widget glass-panel span-full">
+
+                    <!-- Recent Notes Widget -->
+                    <div class="widget notes-widget span-full">
                         <div class="widget-header">
                             <h3>Recent Transcripts & Notes</h3>
-                            <button class="btn-link" id="dash-view-notes">View all →</button>
+                            <button class="btn-link" id="dash-view-notes">View all notes →</button>
                         </div>
                         <div class="notes-grid" id="dash-notes-list">
                             <!-- populated by JS -->
@@ -114,69 +194,132 @@
             <div id="page-tasks" class="page">
                 <header class="top-bar">
                     <div>
-                        <h2 class="page-title">Tasks</h2>
-                        <p class="page-subtitle">Manage your to-do list</p>
+                        <h2 class="page-title">Tasks Management</h2>
+                        <p class="page-subtitle">Task selesai otomatis diarsipkan ke Bank Data agar dashboard selalu bersih dan bebas spam</p>
                     </div>
                     <div class="quick-actions">
-                        <select class="filter-select" id="task-filter">
-                            <option value="all">All Tasks</option>
-                            <option value="pending">Pending</option>
-                            <option value="done">Completed</option>
-                        </select>
-                        <button class="btn-primary small" id="add-task-btn">➕ New Task</button>
+                        <button class="btn-secondary small" id="toggle-bank-data-btn">
+                            📦 Bank Data Task Selesai (<span id="bank-data-count">0</span>)
+                        </button>
+                        <button class="btn-primary small" id="add-task-btn">+ New Task</button>
                     </div>
                 </header>
+
                 <!-- Add Task Form -->
-                <div id="add-task-form" class="glass-panel add-form" style="display:none;">
-                    <h4>Add New Task</h4>
+                <div id="add-task-form" class="mac-card add-form" style="display:none;">
+                    <h4>Buat Task Baru</h4>
                     <div class="form-row">
-                        <input type="text" id="task-input" class="form-input" placeholder="Task description...">
+                        <input type="text" id="task-input" class="form-input" placeholder="Apa yang perlu dikerjakan?" style="flex:2;min-width:200px">
                         <select id="task-category" class="form-input small-select">
                             <option value="Work">Work</option>
                             <option value="Personal">Personal</option>
                             <option value="Urgent">Urgent</option>
                         </select>
-                        <button class="btn-primary small" id="save-task-btn">Save</button>
-                        <button class="btn-secondary small" id="cancel-task-btn">Cancel</button>
+                        <select id="task-status-input" class="form-input small-select">
+                            <option value="pending">⏳ Belum Berjalan (Pending)</option>
+                            <option value="in-progress">⚡ Sedang Berjalan (On Progress)</option>
+                            <option value="done">✅ Selesai (Langsung Arsipkan)</option>
+                        </select>
+                        <button class="btn-primary small" id="save-task-btn">Simpan Task</button>
+                        <button class="btn-secondary small" id="cancel-task-btn">Batal</button>
                     </div>
                 </div>
-                <div class="full-task-list glass-panel" id="full-task-list">
-                    <!-- populated by JS -->
+
+                <!-- Active Kanban Board (Clean 2-Column: Belum Berjalan & Sedang Berjalan) -->
+                <div class="active-kanban-section">
+                    <div class="tasks-kanban-grid-active">
+                        <!-- Column 1: Pending (Belum Berjalan) -->
+                        <div class="kanban-column" id="col-pending">
+                            <div class="kanban-header">
+                                <div class="kanban-title-wrap">
+                                    <span class="status-indicator-dot dot-pending"></span>
+                                    <span>Task Belum Berjalan</span>
+                                </div>
+                                <span class="status-count-badge" id="count-pending">0</span>
+                            </div>
+                            <div class="kanban-cards-list" id="list-pending">
+                                <!-- populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Column 2: On Progress (Sedang Berjalan) -->
+                        <div class="kanban-column" id="col-in-progress">
+                            <div class="kanban-header">
+                                <div class="kanban-title-wrap">
+                                    <span class="status-indicator-dot dot-progress"></span>
+                                    <span>Task Sedang Berjalan</span>
+                                </div>
+                                <span class="status-count-badge progress-badge" id="count-in-progress">0</span>
+                            </div>
+                            <div class="kanban-cards-list" id="list-in-progress">
+                                <!-- populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collapsible / Dedicated Bank Data Task Selesai Section -->
+                <div class="bank-data-vault mac-card" id="bank-data-vault" style="display:none;margin-top:20px;">
+                    <div class="vault-header">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:1.4rem">📦</span>
+                            <div>
+                                <h3 style="font-size:1.05rem;margin:0;">Bank Data Task Selesai (Archive Vault)</h3>
+                                <p style="font-size:0.78rem;color:var(--muted);margin:2px 0 0 0">
+                                    Semua tugas yang sudah diselesaikan disimpan di sini secara permanen. Anda dapat memulihkannya kembali kapan saja.
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <input type="text" id="bank-data-search" class="form-input small" placeholder="Cari di bank data…" style="width:160px">
+                            <button class="btn-secondary small" id="close-bank-data-btn">✕ Tutup</button>
+                        </div>
+                    </div>
+
+                    <div class="bank-data-list" id="bank-data-list">
+                        <!-- populated by JS -->
+                    </div>
                 </div>
             </div>
 
-            <!-- ====================== PAGE: CALENDAR ====================== -->
+            <!-- ====================== PAGE: CALENDAR & AGENDA ====================== -->
             <div id="page-calendar" class="page">
                 <header class="top-bar">
                     <div>
-                        <h2 class="page-title">Calendar</h2>
-                        <p class="page-subtitle" id="cal-month-label">Loading...</p>
+                        <h2 class="page-title">Calendar & Agenda</h2>
+                        <p class="page-subtitle" id="cal-month-label">Loading…</p>
                     </div>
                     <div class="quick-actions">
-                        <button class="btn-secondary small" id="cal-prev">← Prev</button>
-                        <button class="btn-secondary small" id="cal-next">Next →</button>
-                        <button class="btn-primary small" id="add-event-btn">➕ New Event</button>
+                        <button class="btn-secondary small" id="cal-prev">‹ Prev</button>
+                        <button class="btn-secondary small" id="cal-next">Next ›</button>
+                        <button class="btn-primary small" id="add-event-btn">+ New Event</button>
                     </div>
                 </header>
+
                 <!-- Add Event Form -->
-                <div id="add-event-form" class="glass-panel add-form" style="display:none;">
-                    <h4>Add New Event</h4>
+                <div id="add-event-form" class="mac-card add-form" style="display:none;">
+                    <h4>Tambah Agenda / Event Baru</h4>
                     <div class="form-row">
-                        <input type="text" id="event-title-input" class="form-input" placeholder="Event title...">
+                        <input type="text" id="event-title-input" class="form-input" placeholder="Nama acara/agenda…">
                         <input type="date" id="event-date-input" class="form-input">
                         <input type="time" id="event-time-input" class="form-input">
-                        <button class="btn-primary small" id="save-event-btn">Save</button>
-                        <button class="btn-secondary small" id="cancel-event-btn">Cancel</button>
+                        <button class="btn-primary small" id="save-event-btn">Simpan</button>
+                        <button class="btn-secondary small" id="cancel-event-btn">Batal</button>
                     </div>
                 </div>
-                <div class="calendar-container glass-panel">
+
+                <div class="calendar-container mac-card">
                     <div class="cal-grid-header">
                         <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                     </div>
                     <div class="cal-grid" id="cal-grid"></div>
                 </div>
-                <div class="event-list-full glass-panel" id="event-list-full">
-                    <h3 style="margin-bottom:16px">All Scheduled Events</h3>
+
+                <div class="event-list-full mac-card" id="event-list-full">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <h3 style="font-size:1.05rem;margin:0;">Daftar Agenda & Checklist Selesai</h3>
+                        <span style="font-size:0.8rem;color:var(--muted)">Centang acara yang telah Anda hadiri/selesaikan</span>
+                    </div>
                     <div id="event-items-container"></div>
                 </div>
             </div>
@@ -186,27 +329,109 @@
                 <header class="top-bar">
                     <div>
                         <h2 class="page-title">Notes & Audio</h2>
-                        <p class="page-subtitle">Your transcripts and written notes</p>
+                        <p class="page-subtitle">Transcripts, catatan meeting, dan rekaman audio (Bisa diedit kembali)</p>
                     </div>
                     <div class="quick-actions">
                         <button class="btn-secondary small" id="record-btn">🎙️ Record Audio</button>
-                        <button class="btn-primary small" id="add-note-btn">➕ New Note</button>
+                        <button class="btn-primary small" id="add-note-btn">+ New Note</button>
                     </div>
                 </header>
+
                 <!-- Add Note Form -->
-                <div id="add-note-form" class="glass-panel add-form" style="display:none;">
-                    <h4>Write a New Note</h4>
+                <div id="add-note-form" class="mac-card add-form" style="display:none;">
+                    <h4>Tulis Catatan Baru</h4>
                     <div class="form-col">
-                        <input type="text" id="note-title-input" class="form-input" placeholder="Note title...">
-                        <textarea id="note-body-input" class="form-input" rows="4" placeholder="Write your note here..."></textarea>
+                        <input type="text" id="note-title-input" class="form-input" placeholder="Judul catatan…">
+                        <textarea id="note-body-input" class="form-input" rows="4" placeholder="Tuliskan isi catatan Anda di sini…"></textarea>
                         <div class="form-row">
-                            <button class="btn-primary small" id="save-note-btn">Save Note</button>
-                            <button class="btn-secondary small" id="cancel-note-btn">Cancel</button>
+                            <button class="btn-primary small" id="save-note-btn">Simpan Catatan</button>
+                            <button class="btn-secondary small" id="cancel-note-btn">Batal</button>
                         </div>
                     </div>
                 </div>
+
                 <div class="notes-full-grid" id="notes-full-grid">
                     <!-- populated by JS -->
+                </div>
+            </div>
+
+            <!-- ====================== PAGE: ERASER AI STUDIO ====================== -->
+            <div id="page-eraser" class="page">
+                <header class="top-bar">
+                    <div>
+                        <div style="display:flex;align-items:center;gap:8px">
+                            <h2 class="page-title">Eraser AI Studio</h2>
+                            <span class="badge" style="background:var(--accent);color:#fff">Realtime Auto-Save</span>
+                        </div>
+                        <p class="page-subtitle">Visual Notes, Mermaid Diagrams & Integrasi Resmi Eraser.io (https://www.eraser.io/ai)</p>
+                    </div>
+                    <div class="quick-actions">
+                        <!-- Direct Link to official Eraser.io AI -->
+                        <a href="https://www.eraser.io/ai" target="_blank" rel="noopener noreferrer" class="btn-primary small" style="text-decoration:none">
+                            🚀 Buka Eraser.io AI ↗
+                        </a>
+                        <div class="realtime-status-pill" id="eraser-save-status">
+                            <span class="realtime-dot"></span>
+                            <span id="eraser-status-text">Tersimpan realtime</span>
+                        </div>
+                        <button class="btn-secondary small" id="eraser-ai-diagram-btn">✨ Gemini Buat Diagram</button>
+                        <button class="btn-secondary small" id="eraser-ai-polish-btn">🧹 Rapikan Catatan</button>
+                        <button class="btn-secondary small" id="eraser-copy-btn">📋 Salin</button>
+                        <button class="btn-secondary small" id="eraser-clear-btn">🗑️ Hapus</button>
+                    </div>
+                </header>
+
+                <!-- Sub-tabs to switch between Internal Studio and Web Eraser.io -->
+                <div class="eraser-tab-bar">
+                    <button class="eraser-tab-btn active" id="tab-eraser-internal">📝 Canvas Internal (Auto-Save Realtime)</button>
+                    <button class="eraser-tab-btn" id="tab-eraser-web">🌐 Web Eraser.io AI (https://www.eraser.io/ai)</button>
+                </div>
+
+                <!-- View 1: Internal Studio Split Editor & Visual Canvas -->
+                <div class="eraser-workspace" id="eraser-internal-view">
+                    <!-- Left: Markdown & Diagram Editor -->
+                    <div class="eraser-pane editor-pane mac-card">
+                        <div class="pane-header">
+                            <span>✏️ Editor Markdown & Diagram-as-Code</span>
+                            <span style="font-size:0.75rem;color:var(--muted)">Dukungan teks & diagram ```mermaid</span>
+                        </div>
+                        <div class="eraser-quick-snippets">
+                            <button class="snippet-btn" data-insert="flowchart">Diagram Alur</button>
+                            <button class="snippet-btn" data-insert="sequence">Sequence Diagram</button>
+                            <button class="snippet-btn" data-insert="mindmap">Mind Map</button>
+                            <button class="snippet-btn" data-insert="checklist">Checklist</button>
+                        </div>
+                        <textarea id="eraser-editor" class="eraser-textarea" placeholder="Tulis catatan, flowchart, atau gunakan AI untuk membuat diagram visual di sini..."></textarea>
+                    </div>
+
+                    <!-- Right: Live Visual Canvas -->
+                    <div class="eraser-pane preview-pane mac-card">
+                        <div class="pane-header">
+                            <span>🎨 Live Visual Canvas</span>
+                            <span style="font-size:0.75rem;color:var(--muted)">Rendering otomatis realtime</span>
+                        </div>
+                        <div id="eraser-preview" class="eraser-preview-content">
+                            <!-- Live Rendered Markdown & SVG Diagrams -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View 2: Official Eraser.io Embed & Launcher View -->
+                <div class="eraser-web-view mac-card" id="eraser-web-view" style="display:none;">
+                    <div class="eraser-web-header">
+                        <div>
+                            <h3 style="font-size:1.1rem;margin-bottom:4px">🌐 Eraser.io AI Workspace</h3>
+                            <p style="font-size:0.85rem;color:var(--muted)">
+                                Platform pembuatan diagram dan dokumen teknis resmi di <a href="https://www.eraser.io/ai" target="_blank" style="color:var(--accent);font-weight:600">https://www.eraser.io/ai</a>.
+                            </p>
+                        </div>
+                        <a href="https://www.eraser.io/ai" target="_blank" rel="noopener noreferrer" class="btn-primary small" style="text-decoration:none">
+                            Buka di Tab Baru ↗
+                        </a>
+                    </div>
+                    <div class="eraser-iframe-wrap">
+                        <iframe src="https://www.eraser.io/ai" id="eraser-frame" title="Eraser AI" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+                    </div>
                 </div>
             </div>
 
@@ -215,12 +440,82 @@
                 <header class="top-bar">
                     <div>
                         <h2 class="page-title">Settings</h2>
-                        <p class="page-subtitle">Manage your Personal OS preferences</p>
+                        <p class="page-subtitle">Pengaturan aplikasi dan konfigurasi Google Gemini AI</p>
                     </div>
                 </header>
+
                 <div class="settings-container">
-                    <div class="settings-section glass-panel">
-                        <h3>👤 Profile</h3>
+                    <!-- Google AI Studio Configuration Section -->
+                    <div class="settings-section mac-card ai-key-section">
+                        <div class="section-title-wrap">
+                            <span style="font-size:1.2rem">🤖</span>
+                            <div>
+                                <h3>Google AI Studio (Gemini 3.8 Flash)</h3>
+                                <p style="color:var(--muted);font-size:0.85rem;margin-top:2px;">
+                                    Gunakan API key gratis dari Google AI Studio dengan model Gemini 3.8 Flash terbaru.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mac-callout-info">
+                            <strong>Cara mendapatkan API key gratis:</strong>
+                            <ol style="margin:6px 0 0 18px;line-height:1.6">
+                                <li>Buka <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600">Google AI Studio (aistudio.google.com/apikey)</a>.</li>
+                                <li>Login dengan akun Google Anda dan klik tombol <strong>"Create API key"</strong>.</li>
+                                <li>Salin (*copy*) kunci yang muncul dan tempelkan (*paste*) di bawah ini.</li>
+                            </ol>
+                        </div>
+
+                        <div class="settings-row">
+                            <div class="settings-label">Model Gemini</div>
+                            <div class="settings-control">
+                                <select class="form-input small-select" id="gemini-model-select">
+                                    <option value="gemini-3.8-flash" selected>Gemini 3.8 Flash (High Performance & Terbaru)</option>
+                                    <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                                    <option value="gemini-1.5-flash">Gemini 1.5 Flash (Stabil)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-row" style="align-items:flex-start">
+                            <div class="settings-label" style="padding-top:10px">Gemini API Key</div>
+                            <div class="settings-control" style="flex:1;flex-direction:column;align-items:stretch;gap:8px">
+                                <div style="display:flex;gap:8px;position:relative">
+                                    <input type="password" id="gemini-api-key-input" class="form-input" placeholder="AIzaSy..." style="padding-right:40px">
+                                    <button type="button" id="toggle-key-visibility" class="btn-secondary small" style="padding:0 12px" title="Tampilkan/Sembunyikan Key">👁️</button>
+                                </div>
+                                <div style="display:flex;gap:8px;margin-top:4px">
+                                    <button class="btn-primary small" id="save-api-key-btn">Save & Test Key</button>
+                                    <button class="btn-secondary small" id="clear-api-key-btn">Hapus Key</button>
+                                </div>
+                                <div id="api-key-status" style="margin-top:6px;font-size:0.85rem;display:none"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Section -->
+                    <div class="settings-section mac-card">
+                        <div class="section-title-wrap">
+                            <span style="font-size:1.2rem">🎨</span>
+                            <h3>Appearance (macOS Theme)</h3>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-label">Color Theme</div>
+                            <div class="settings-control">
+                                <select class="form-input small-select" id="theme-select">
+                                    <option value="mac-light">macOS Light (Clean Silver)</option>
+                                    <option value="mac-dark">macOS Dark (Space Gray)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Section -->
+                    <div class="settings-section mac-card">
+                        <div class="section-title-wrap">
+                            <span style="font-size:1.2rem">👤</span>
+                            <h3>Profile</h3>
+                        </div>
                         <div class="settings-row">
                             <div class="settings-label">Display Name</div>
                             <div class="settings-control">
@@ -229,29 +524,21 @@
                             </div>
                         </div>
                         <div class="settings-row">
-                            <div class="settings-label">Email</div>
+                            <div class="settings-label">Google Account</div>
                             <div class="settings-control">
                                 <input type="email" id="settings-email" class="form-input" value="user@gmail.com" disabled>
                             </div>
                         </div>
                     </div>
-                    <div class="settings-section glass-panel">
-                        <h3>🎨 Appearance</h3>
-                        <div class="settings-row">
-                            <div class="settings-label">Theme</div>
-                            <div class="settings-control">
-                                <select class="form-input small-select" id="theme-select">
-                                    <option value="dark">Dark (Default)</option>
-                                    <option value="purple">Purple</option>
-                                    <option value="green">Green</option>
-                                </select>
-                            </div>
+
+                    <!-- Notifications Section -->
+                    <div class="settings-section mac-card">
+                        <div class="section-title-wrap">
+                            <span style="font-size:1.2rem">🔔</span>
+                            <h3>Notifications</h3>
                         </div>
-                    </div>
-                    <div class="settings-section glass-panel">
-                        <h3>🔔 Notifications</h3>
                         <div class="settings-row">
-                            <div class="settings-label">Task reminders</div>
+                            <div class="settings-label">Task Reminders</div>
                             <div class="settings-control">
                                 <label class="toggle">
                                     <input type="checkbox" id="notif-tasks" checked>
@@ -260,7 +547,7 @@
                             </div>
                         </div>
                         <div class="settings-row">
-                            <div class="settings-label">Calendar events</div>
+                            <div class="settings-label">Calendar Events</div>
                             <div class="settings-control">
                                 <label class="toggle">
                                     <input type="checkbox" id="notif-calendar" checked>
@@ -269,21 +556,26 @@
                             </div>
                         </div>
                         <div class="settings-row">
-                            <div class="settings-label">AI Daily Brief</div>
+                            <div class="settings-label">AI Daily Briefing</div>
                             <div class="settings-control">
                                 <label class="toggle">
-                                    <input type="checkbox" id="notif-ai">
+                                    <input type="checkbox" id="notif-ai" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div class="settings-section glass-panel">
-                        <h3>🔑 Account</h3>
+
+                    <!-- Account Logout -->
+                    <div class="settings-section mac-card">
+                        <div class="section-title-wrap">
+                            <span style="font-size:1.2rem">🔒</span>
+                            <h3>Session</h3>
+                        </div>
                         <div class="settings-row">
-                            <div class="settings-label">Sign out from all devices</div>
+                            <div class="settings-label">Sign out from Personal OS</div>
                             <div class="settings-control">
-                                <button class="btn-danger small" id="settings-logout-btn">Logout</button>
+                                <button class="btn-danger small" id="settings-logout-btn">Log Out…</button>
                             </div>
                         </div>
                     </div>
@@ -291,6 +583,27 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- ====================== MODAL: EDIT NOTE ====================== -->
+    <div id="edit-note-modal" class="mac-modal-backdrop" style="display:none;">
+        <div class="mac-modal">
+            <div class="modal-header">
+                <h3>✏️ Edit Catatan</h3>
+                <button class="btn-close-modal" id="close-edit-note-modal">✕</button>
+            </div>
+            <input type="hidden" id="edit-note-id">
+            <div class="form-col">
+                <label class="form-label">Judul Catatan</label>
+                <input type="text" id="edit-note-title" class="form-input" placeholder="Judul catatan...">
+                <label class="form-label">Isi Catatan</label>
+                <textarea id="edit-note-body" class="form-input" rows="7" placeholder="Isi catatan..."></textarea>
+                <div class="form-row" style="justify-content:flex-end;margin-top:10px">
+                    <button class="btn-secondary small" id="cancel-edit-note-btn">Batal</button>
+                    <button class="btn-primary small" id="save-edit-note-btn">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
