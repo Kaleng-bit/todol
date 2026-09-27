@@ -1905,3 +1905,299 @@ body.theme-mac-dark .bank-data-row:hover {
     .nav-item { padding: 6px 10px; }
     .main-content { padding: 16px; }
 }
+
+/* ============================================================
+   AUTH LOADING OVERLAY
+   ============================================================ */
+.auth-loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(245, 245, 247, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body.theme-mac-dark .auth-loading-overlay {
+    background: rgba(30, 30, 30, 0.92);
+}
+
+.auth-loading-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 28px 36px;
+    text-align: center;
+    box-shadow: var(--shadow-modal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 280px;
+}
+
+.auth-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border-subtle);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 8px 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   WORKSPACE SELECTOR (SIDEBAR)
+   ============================================================ */
+.workspace-selector-wrap {
+    margin-bottom: 14px;
+    position: relative;
+}
+
+.btn-icon-subtle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    padding: 0 4px;
+    line-height: 1;
+    border-radius: 4px;
+}
+
+.btn-icon-subtle:hover {
+    background: var(--bg-hover);
+    color: var(--accent);
+}
+
+.workspace-dropdown-current {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: all 0.15s ease;
+}
+
+.workspace-dropdown-current:hover {
+    border-color: var(--accent);
+    background: var(--bg-hover);
+}
+
+.ws-current-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ws-chevron {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+}
+
+.workspace-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    box-shadow: var(--shadow-modal);
+    z-index: 1000;
+    padding: 6px;
+    animation: modalPop 0.15s ease;
+}
+
+.workspace-dropdown-list {
+    max-height: 220px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ws-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.ws-menu-item:hover {
+    background: var(--bg-hover);
+}
+
+.ws-menu-item.active {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.ws-menu-actions {
+    margin-left: auto;
+    display: none;
+    gap: 4px;
+}
+
+.ws-menu-item:hover .ws-menu-actions {
+    display: flex;
+}
+
+.ws-menu-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 2px 4px;
+    border-radius: 3px;
+    opacity: 0.7;
+}
+
+.ws-menu-btn:hover {
+    opacity: 1;
+    background: var(--bg-card);
+}
+
+.workspace-dropdown-footer {
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 4px;
+    padding-top: 6px;
+}
+
+.btn-link-sm {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+.btn-link-sm:hover {
+    background: var(--bg-hover);
+}
+
+/* ============================================================
+   REMINDERS COMPONENT
+   ============================================================ */
+.reminder-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 8px;
+    transition: all 0.15s ease;
+}
+
+.reminder-item:hover {
+    border-color: rgba(0, 113, 227, 0.25);
+}
+
+.reminder-item.completed {
+    opacity: 0.6;
+}
+
+.reminder-item.completed .reminder-title {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.reminder-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reminder-title {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.reminder-time {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* ============================================================
+   CONNECTION STATUS CARDS (SETTINGS)
+   ============================================================ */
+.connection-status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.connection-card {
+    background: var(--bg-hover);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.connection-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.connection-info h4 {
+    margin: 0 0 2px 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.connection-info p {
+    margin: 0;
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    line-height: 1.35;
+}
+
+.connection-badge-active {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: #d4edda;
+    color: #155724;
+    margin-top: 5px;
+}
+
+body.theme-mac-dark .connection-badge-active {
+    background: rgba(52, 199, 89, 0.2);
+    color: #34c759;
+}

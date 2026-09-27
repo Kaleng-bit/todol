@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User profile and subcollections rule
+    // Each user can ONLY read and write documents inside their own UID namespace
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // All user subcollections:
+      // - workspaces
+      // - tasks
+      // - notes
+      // - calendarEvents
+      // - reminders
+      // - aiConversations
+      // - audioRecords
+      // - documents
+      match /{allSubcollections=**} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Explicitly deny access to any collection outside of /users/{userId}
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

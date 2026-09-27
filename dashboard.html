@@ -15,6 +15,20 @@
     <!-- Ambient Backdrop -->
     <div class="mac-ambient-bg"></div>
 
+    <!-- Auth Loading Overlay -->
+    <div id="auth-loading-overlay" class="auth-loading-overlay">
+        <div class="auth-loading-card">
+            <div class="macos-traffic-lights" style="margin-bottom:12px;">
+                <span class="tl-dot tl-red"></span>
+                <span class="tl-dot tl-yellow"></span>
+                <span class="tl-dot tl-green"></span>
+            </div>
+            <div class="auth-spinner"></div>
+            <h3 style="margin:12px 0 4px;font-size:1.1rem;font-weight:600;">Personal OS</h3>
+            <p style="color:var(--text-secondary);font-size:0.86rem;margin:0;" id="auth-loading-status">Memeriksa autentikasi Google…</p>
+        </div>
+    </div>
+
     <!-- Main macOS Window Container -->
     <div class="mac-window">
         <!-- Sidebar -->
@@ -28,6 +42,27 @@
 
             <div class="logo">
                 <span class="logo-mark"></span> Personal<span class="logo-accent">OS</span>
+            </div>
+
+            <!-- Workspace Selector Dropdown -->
+            <div class="workspace-selector-wrap">
+                <div class="sidebar-section-label" style="display:flex;justify-content:space-between;align-items:center;padding:0 2px 4px;">
+                    <span>Workspace</span>
+                    <button type="button" class="btn-icon-subtle" id="btn-add-workspace" title="Tambah Workspace Baru">+</button>
+                </div>
+                <div class="workspace-dropdown-current" id="workspace-dropdown-trigger" title="Klik untuk berganti workspace">
+                    <span class="ws-current-icon" id="ws-active-icon">💼</span>
+                    <span class="ws-current-name" id="ws-active-name">All Workspaces</span>
+                    <span class="ws-chevron">▾</span>
+                </div>
+                <div class="workspace-dropdown-menu" id="workspace-dropdown-menu" style="display:none;">
+                    <div class="workspace-dropdown-list" id="workspace-dropdown-list">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="workspace-dropdown-footer">
+                        <button type="button" class="btn-link-sm" id="btn-manage-workspaces">+ Buat Workspace Baru…</button>
+                    </div>
+                </div>
             </div>
 
             <div class="sidebar-section-label">Favorites</div>
@@ -209,7 +244,10 @@
                 <div id="add-task-form" class="mac-card add-form" style="display:none;">
                     <h4>Buat Task Baru</h4>
                     <div class="form-row">
-                        <input type="text" id="task-input" class="form-input" placeholder="Apa yang perlu dikerjakan?" style="flex:2;min-width:200px">
+                        <input type="text" id="task-input" class="form-input" placeholder="Apa yang perlu dikerjakan?" style="flex:2;min-width:180px">
+                        <select id="task-workspace-select" class="form-input small-select" title="Pilih Workspace">
+                            <!-- Populated with user workspaces -->
+                        </select>
                         <select id="task-category" class="form-input small-select">
                             <option value="Work">Work</option>
                             <option value="Personal">Personal</option>
@@ -300,7 +338,10 @@
                 <div id="add-event-form" class="mac-card add-form" style="display:none;">
                     <h4>Tambah Agenda / Event Baru</h4>
                     <div class="form-row">
-                        <input type="text" id="event-title-input" class="form-input" placeholder="Nama acara/agenda…">
+                        <input type="text" id="event-title-input" class="form-input" placeholder="Nama acara/agenda…" style="flex:2">
+                        <select id="event-workspace-select" class="form-input small-select" title="Pilih Workspace">
+                            <!-- Populated with user workspaces -->
+                        </select>
                         <input type="date" id="event-date-input" class="form-input">
                         <input type="time" id="event-time-input" class="form-input">
                         <button class="btn-primary small" id="save-event-btn">Simpan</button>
@@ -322,6 +363,34 @@
                     </div>
                     <div id="event-items-container"></div>
                 </div>
+
+                <!-- Reminders Card in Calendar Page -->
+                <div class="reminders-container mac-card" style="margin-top:20px;padding:20px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <div>
+                            <h3 style="font-size:1.05rem;margin:0;">⏰ Pengingat (Reminders)</h3>
+                            <span style="font-size:0.8rem;color:var(--muted)">Pengingat personal tersimpan aman di cloud Firestore</span>
+                        </div>
+                        <button class="btn-secondary small" id="add-reminder-btn">+ Tambah Pengingat</button>
+                    </div>
+
+                    <!-- Add Reminder Form -->
+                    <div id="add-reminder-form" class="add-form" style="display:none;margin-bottom:14px;">
+                        <div class="form-row">
+                            <input type="text" id="reminder-title-input" class="form-input" placeholder="Apa yang ingin diingatkan?" style="flex:2">
+                            <select id="reminder-workspace-select" class="form-input small-select">
+                                <!-- Populated with workspaces -->
+                            </select>
+                            <input type="datetime-local" id="reminder-time-input" class="form-input">
+                            <button class="btn-primary small" id="save-reminder-btn">Simpan</button>
+                            <button class="btn-secondary small" id="cancel-reminder-btn">Batal</button>
+                        </div>
+                    </div>
+
+                    <div id="reminder-items-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
             </div>
 
             <!-- ====================== PAGE: NOTES & AUDIO ====================== -->
@@ -341,7 +410,12 @@
                 <div id="add-note-form" class="mac-card add-form" style="display:none;">
                     <h4>Tulis Catatan Baru</h4>
                     <div class="form-col">
-                        <input type="text" id="note-title-input" class="form-input" placeholder="Judul catatan…">
+                        <div class="form-row">
+                            <input type="text" id="note-title-input" class="form-input" placeholder="Judul catatan…" style="flex:2">
+                            <select id="note-workspace-select" class="form-input small-select" title="Pilih Workspace">
+                                <!-- Populated with user workspaces -->
+                            </select>
+                        </div>
                         <textarea id="note-body-input" class="form-input" rows="4" placeholder="Tuliskan isi catatan Anda di sini…"></textarea>
                         <div class="form-row">
                             <button class="btn-primary small" id="save-note-btn">Simpan Catatan</button>
@@ -493,6 +567,43 @@
                         </div>
                     </div>
 
+                    <!-- System & Architecture Status -->
+                    <div class="settings-section mac-card">
+                        <div class="section-title-wrap">
+                            <span style="font-size:1.2rem">⚡</span>
+                            <h3>System & Cloud Architecture</h3>
+                        </div>
+                        <p style="color:var(--text-secondary);font-size:0.84rem;margin-bottom:12px">
+                            Status integrasi backend, autentikasi cloud, dan database terisolasi per akun pengguna.
+                        </p>
+                        <div class="connection-status-grid">
+                            <div class="connection-card">
+                                <span class="connection-icon">🔐</span>
+                                <div class="connection-info">
+                                    <h4>Authentication</h4>
+                                    <p id="settings-status-auth-desc">Google OAuth (Firebase Auth)</p>
+                                    <span class="connection-badge-active" id="settings-status-auth-badge">Active</span>
+                                </div>
+                            </div>
+                            <div class="connection-card">
+                                <span class="connection-icon">🗄️</span>
+                                <div class="connection-info">
+                                    <h4>Cloud Database</h4>
+                                    <p id="settings-status-db-desc">Cloud Firestore (users/{uid})</p>
+                                    <span class="connection-badge-active" id="settings-status-db-badge">Connected</span>
+                                </div>
+                            </div>
+                            <div class="connection-card">
+                                <span class="connection-icon">🤖</span>
+                                <div class="connection-info">
+                                    <h4>AI Engine</h4>
+                                    <p id="settings-status-ai-desc">Gemini 3.8 Flash</p>
+                                    <span class="connection-badge-active" id="settings-status-ai-badge">Ready</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Appearance Section -->
                     <div class="settings-section mac-card">
                         <div class="section-title-wrap">
@@ -514,19 +625,25 @@
                     <div class="settings-section mac-card">
                         <div class="section-title-wrap">
                             <span style="font-size:1.2rem">👤</span>
-                            <h3>Profile</h3>
+                            <h3>Profile & Google Account</h3>
                         </div>
                         <div class="settings-row">
                             <div class="settings-label">Display Name</div>
                             <div class="settings-control">
-                                <input type="text" id="settings-name" class="form-input" value="Demo User">
+                                <input type="text" id="settings-name" class="form-input" value="Loading...">
                                 <button class="btn-primary small" id="save-name-btn">Save</button>
                             </div>
                         </div>
                         <div class="settings-row">
                             <div class="settings-label">Google Account</div>
                             <div class="settings-control">
-                                <input type="email" id="settings-email" class="form-input" value="user@gmail.com" disabled>
+                                <input type="email" id="settings-email" class="form-input" value="Loading..." disabled>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-label">Firebase User UID</div>
+                            <div class="settings-control">
+                                <input type="text" id="settings-uid" class="form-input" value="Loading..." disabled style="font-family:monospace;font-size:0.8rem">
                             </div>
                         </div>
                     </div>
@@ -606,9 +723,57 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- ====================== MODAL: WORKSPACE ====================== -->
+    <div id="workspace-modal" class="mac-modal-backdrop" style="display:none;">
+        <div class="mac-modal" style="max-width:440px;">
+            <div class="modal-header">
+                <h3 id="workspace-modal-title">📁 Tambah Workspace Baru</h3>
+                <button class="btn-close-modal" id="close-workspace-modal">✕</button>
+            </div>
+            <div class="form-col" style="padding:16px 20px 20px;">
+                <label class="form-label">Nama Workspace</label>
+                <input type="text" id="ws-name-input" class="form-input" placeholder="contoh: PT Pro, Freelance, Project A...">
+                
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
+                    <div>
+                        <label class="form-label">Icon Emoji</label>
+                        <select id="ws-icon-input" class="form-input small-select">
+                            <option value="💼">💼 Work</option>
+                            <option value="🏠">🏠 Personal</option>
+                            <option value="🚀">🚀 Project / Freelance</option>
+                            <option value="🏢">🏢 Perusahaan</option>
+                            <option value="📚">📚 Edukasi / Riset</option>
+                            <option value="🎯">🎯 Target / Goals</option>
+                            <option value="✨">✨ Kreatif</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Warna Label</label>
+                        <select id="ws-color-input" class="form-input small-select">
+                            <option value="#0071e3">Biru macOS</option>
+                            <option value="#34c759">Hijau Mint</option>
+                            <option value="#ff9500">Oranye Sunset</option>
+                            <option value="#af52de">Ungu Lavender</option>
+                            <option value="#ff2d55">Merah Crimson</option>
+                            <option value="#5856d6">Indigo Deep</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row" style="justify-content:flex-end;margin-top:16px">
+                    <button class="btn-secondary small" id="cancel-workspace-btn">Batal</button>
+                    <button class="btn-primary small" id="save-workspace-btn">Simpan Workspace</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Services -->
     <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="firestore-service.js"></script>
     <script src="dashboard.js"></script>
 </body>
 </html>

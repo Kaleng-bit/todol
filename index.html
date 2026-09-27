@@ -177,11 +177,56 @@
             <div class="logo">Personal<span>OS</span></div>
             <p>© 2026 Personal OS. Built with precision.</p>
         </div>
-    </footer>
+    <!-- Firebase Setup & Error Modal -->
+    <div id="firebase-setup-modal" class="setup-modal-backdrop" style="display:none;">
+        <div class="setup-modal-box glass-panel">
+            <div class="setup-modal-header">
+                <h3>🔥 Konfigurasi Firebase Diperlukan</h3>
+                <button type="button" class="btn-close-modal" id="close-setup-modal">✕</button>
+            </div>
+            <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:14px;line-height:1.5;">
+                Fitur Google Sign-In & Firestore Database memerlukan konfigurasi Firebase project Anda. 
+                Anda dapat menambahkan environment variable di <strong>Vercel</strong> atau memasukkan konfigurasi langsung di bawah ini:
+            </p>
+            <div class="setup-form-grid">
+                <div class="setup-field">
+                    <label>API Key</label>
+                    <input type="text" id="cfg-apiKey" placeholder="AIzaSy..." class="setup-input">
+                </div>
+                <div class="setup-field">
+                    <label>Auth Domain</label>
+                    <input type="text" id="cfg-authDomain" placeholder="your-app.firebaseapp.com" class="setup-input">
+                </div>
+                <div class="setup-field">
+                    <label>Project ID</label>
+                    <input type="text" id="cfg-projectId" placeholder="your-app-id" class="setup-input">
+                </div>
+                <div class="setup-field">
+                    <label>Storage Bucket</label>
+                    <input type="text" id="cfg-storageBucket" placeholder="your-app.appspot.com" class="setup-input">
+                </div>
+                <div class="setup-field">
+                    <label>Messaging Sender ID</label>
+                    <input type="text" id="cfg-messagingSenderId" placeholder="1234567890" class="setup-input">
+                </div>
+                <div class="setup-field">
+                    <label>App ID</label>
+                    <input type="text" id="cfg-appId" placeholder="1:123456:web:abcdef" class="setup-input">
+                </div>
+            </div>
+            <div class="setup-modal-actions">
+                <button type="button" class="btn-secondary small" id="cancel-setup-modal">Tutup</button>
+                <button type="button" class="btn-primary small" id="save-setup-btn">Simpan & Aktifkan Firebase</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK & Services -->
     <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="firestore-service.js"></script>
     <script src="script.js"></script>
 </body>
 
